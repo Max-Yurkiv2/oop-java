@@ -1,0 +1,43 @@
+import java.util.Random;
+
+public class Main {
+    public static void main(String[] args) {
+        int N = 10;
+        int[][] A = new int[N][N];
+        Random rand = new Random();
+
+        // Заповнення масиву випадковими числами (-50..50)
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                A[i][j] = rand.nextInt(201) - 100; // від -50 до 50
+            }
+        }
+
+        // Вивід масиву
+        System.out.println("Матриця A:");
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                System.out.printf("%4d", A[i][j]);
+            }
+            System.out.println();
+        }
+
+        // Обчислення суми від’ємних елементів кожного стовпця
+        int[] sums = new int[N];
+        for (int j = 0; j < N; j++) {
+            int sum = 0;
+            for (int i = 0; i < N; i++) {
+                if (A[i][j] < 0) {
+                    sum += A[i][j];
+                }
+            }
+            sums[j] = sum;
+        }
+
+        // Вивід результатів
+        System.out.println("\nСума від’ємних елементів кожного стовпця:");
+        for (int j = 0; j < N; j++) {
+            System.out.printf("Стовпець %d: %d\n", j + 1, sums[j]);
+        }
+    }
+}
