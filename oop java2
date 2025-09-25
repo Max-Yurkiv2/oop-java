@@ -1,0 +1,27 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Ввід повного рядка
+        System.out.println("Введіть рядок:");
+        String input = sc.nextLine();
+
+        // Розділення на слова
+        String[] words = input.split(" ");
+
+        // Перевірка, чи є достатньо слів
+        if (words.length >= 3) {
+            String result = words[words.length - 3] + " "
+                    + words[words.length - 2] + " "
+                    + words[words.length - 1];
+
+            System.out.println("Скорочений рядок: " + result);
+        } else {
+            System.out.println("Недостатньо слів у рядку!");
+        }
+
+        sc.close();
+    }
+}
