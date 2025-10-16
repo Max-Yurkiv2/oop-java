@@ -1,0 +1,83 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Map<String, Integer> facultyMap = new HashMap<>();
+
+        facultyMap.put("ФІТ", 1);
+        facultyMap.put("ФІС", 2);
+        facultyMap.put("ФЕМ", 3);
+        facultyMap.put("ФЕА", 4);
+        facultyMap.put("ФБТ", 5);
+        facultyMap.put("ФЕЛ", 6);
+        facultyMap.put("ФМФ", 7);
+        facultyMap.put("ФСП", 8);
+        facultyMap.put("ФІТІС", 9);
+        facultyMap.put("ІФНТ", 10);
+
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("\n=== МЕНЮ КАРТИ ФАКУЛЬТЕТІВ ===");
+            System.out.println("1. Додати елемент");
+            System.out.println("2. Знайти корпус факультету");
+            System.out.println("3. Видалити елемент");
+            System.out.println("4. Показати всі елементи");
+            System.out.println("0. Вихід");
+            System.out.print("Ваш вибір: ");
+            choice = scanner.nextInt();
+            scanner.nextLine(); // зчитуємо \n після числа
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Введіть назву факультету: ");
+                    String facultyName = scanner.nextLine();
+                    System.out.print("Введіть номер корпусу: ");
+                    int buildingNumber = scanner.nextInt();
+                    facultyMap.put(facultyName, buildingNumber);
+                    System.out.println(" Елемент додано.");
+                    break;
+
+                case 2:
+                    System.out.print("Введіть назву факультету для пошуку: ");
+                    String searchName = scanner.nextLine();
+                    if (facultyMap.containsKey(searchName)) {
+                        System.out.println("Корпус факультету " + searchName + ": " + facultyMap.get(searchName));
+                    } else {
+                        System.out.println(" Факультет не знайдено.");
+                    }
+                    break;
+
+                case 3:
+                    System.out.print("Введіть назву факультету для видалення: ");
+                    String removeName = scanner.nextLine();
+                    if (facultyMap.remove(removeName) != null) {
+                        System.out.println(" Елемент видалено.");
+                    } else {
+                        System.out.println(" Такого факультету немає.");
+                    }
+                    break;
+
+                case 4:
+                    System.out.println("\n--- Всі факультети та корпуси ---");
+                    for (Map.Entry<String, Integer> entry : facultyMap.entrySet()) {
+                        System.out.println(entry.getKey() + " → корпус № " + entry.getValue());
+                    }
+                    break;
+
+                case 0:
+                    System.out.println("Завершення роботи.");
+                    break;
+
+                default:
+                    System.out.println("Невірний вибір. Спробуйте ще раз.");
+            }
+
+        } while (choice != 0);
+
+        scanner.close();
+    }
+}
