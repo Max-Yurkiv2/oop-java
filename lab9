@@ -1,0 +1,75 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    // Параметри за варіантом 9
+    static final int N = 12;
+    static final int M = 3;
+    static final int A = 25;
+    static final int B = 40;
+
+    public static void main(String[] args) throws Exception {
+
+        Thread[] threads = new Thread[M];
+        String[] fileNames = new String[M];
+
+        // Створення потоків, які генерують масиви
+        for (int i = 0; i < M; i++) {
+            fileNames[i] = "thread_output_" + (i + 1) + ".txt";
+            int index = i;
+            threads[i] = new Thread(() -> generateArrayToFile(fileNames[index]));
+            threads[i].start();
+        }
+
+        // Очікуємо завершення всіх потоків
+        for (Thread t : threads) t.join();
+
+        // Об’єднання файлів через SequenceInputStream
+        mergeFilesSequence(fileNames, "merged_output.txt");
+
+        System.out.println("Готово! Файл merged_output.txt створено.");
+    }
+
+    // Генерація масиву та запис у файл
+    static void generateArrayToFile(String fileName) {
+        Random rand = new Random();
+
+        try (FileOutputStream fos = new FileOutputStream(fileName)) {
+            for (int i = 0; i < N; i++) {
+                int value = A + rand.nextInt(B - A + 1);
+                fos.write((value + " ").getBytes());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Об’єднання файлів за допомогою SequenceInputStream
+    static void mergeFilesSequence(String[] inputFiles, String outputFile) {
+
+        // Створюємо список потоків вводу
+        Vector<InputStream> streams = new Vector<>();
+        try {
+            for (String file : inputFiles) {
+                streams.add(new FileInputStream(file));
+            }
+
+            // Об’єднаний потік
+            SequenceInputStream sis = new SequenceInputStream(streams.elements());
+
+            // Запис у файл результату
+            try (FileOutputStream fos = new FileOutputStream(outputFile)) {
+                int data;
+                while ((data = sis.read()) != -1) {
+                    fos.write(data);
+                }
+            }
+
+            sis.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
