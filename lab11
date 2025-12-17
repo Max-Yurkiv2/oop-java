@@ -1,0 +1,78 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class Main extends JFrame {
+
+    private DrawPanel drawPanel;
+
+    public Main() {
+        super("Варіант 10 - Малювання мишею");
+
+        drawPanel = new DrawPanel();
+        add(drawPanel);
+
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    drawPanel.clear();
+                }
+            }
+        });
+
+        setSize(600, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
+
+        setFocusable(true);
+        requestFocusInWindow();
+    }
+
+    private static class DrawPanel extends JPanel {
+
+        private Image img;
+        private Graphics2D g2;
+
+        public DrawPanel() {
+            setDoubleBuffered(false);
+
+            addMouseMotionListener(new MouseMotionAdapter() {
+                @Override
+                public void mouseDragged(MouseEvent e) {
+                    if (SwingUtilities.isLeftMouseButton(e)) {
+                        if (g2 == null) initDrawing();
+                        g2.fillOval(e.getX(), e.getY(), 6, 6);
+                        repaint();
+                    }
+                }
+            });
+        }
+
+        private void initDrawing() {
+            img = createImage(getWidth(), getHeight());
+            g2 = (Graphics2D) img.getGraphics();
+            g2.setColor(Color.BLACK);
+            g2.setStroke(new BasicStroke(2));
+        }
+
+        public void clear() {
+            img = null;
+            g2 = null;
+            repaint();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (img != null) {
+                g.drawImage(img, 0, 0, null);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        new Main();
+    }
+}
