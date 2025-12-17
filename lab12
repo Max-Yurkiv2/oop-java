@@ -1,0 +1,70 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class Main extends JFrame {
+
+    private JTextField x1Field, y1Field, x2Field, y2Field;
+    private JButton calculateButton;
+
+    public Main() {
+        super("Варіант 10 – Відстань між точками");
+
+        setLayout(new GridLayout(5, 2, 5, 5));
+
+        add(new JLabel("X1:"));
+        x1Field = new JTextField();
+        add(x1Field);
+
+        add(new JLabel("Y1:"));
+        y1Field = new JTextField();
+        add(y1Field);
+
+        add(new JLabel("X2:"));
+        x2Field = new JTextField();
+        add(x2Field);
+
+        add(new JLabel("Y2:"));
+        y2Field = new JTextField();
+        add(y2Field);
+
+        calculateButton = new JButton("Обчислити відстань");
+        add(calculateButton);
+
+        // Порожня мітка для вирівнювання сітки
+        add(new JLabel(""));
+
+        // Додаємо ActionListener для кнопки
+        calculateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                calculateDistance();
+            }
+        });
+
+        setSize(300, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    private void calculateDistance() {
+        try {
+            double x1 = Double.parseDouble(x1Field.getText());
+            double y1 = Double.parseDouble(y1Field.getText());
+            double x2 = Double.parseDouble(x2Field.getText());
+            double y2 = Double.parseDouble(y2Field.getText());
+
+            double distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+
+            System.out.println("Відстань між точками: " + distance);
+            JOptionPane.showMessageDialog(this, "Відстань між точками: " + distance);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Будь ласка, введіть числа у всі поля!");
+        }
+    }
+
+    public static void main(String[] args) {
+        new Main();
+    }
+}
