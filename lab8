@@ -1,0 +1,34 @@
+public class Main {
+
+    // Фрагмент тексту варіанту 3
+    private static final String text = "Але такий поділ програмного забезпечення на системне і прикладне " +
+            "є чисто умовним, оскільки його розробка в обох випадках здійснюється з допомогою одних і тих самих " +
+            "інструментальних засобів: компіляторів мов високого рівня; засобів редагування, компонування і " +
+            "завантаження програм.";
+
+    // Метод кодування за допомогою XOR
+    public static String encode(String input, String key) {
+        char[] chars = input.toCharArray();
+        char[] keyChars = key.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            chars[i] ^= keyChars[i % keyChars.length];
+        }
+        return new String(chars);
+    }
+
+    // Метод розкодування — такий самий, як кодування XOR
+    public static String decode(String input, String key) {
+        return encode(input, key); // XOR шифр симетричний
+    }
+
+    public static void main(String[] args) {
+        String key = "Іваненко Іван Іванович"; // приклад, сюди вставляєте своє прізвище та ім'я
+        System.out.println("Оригінальний текст:\n" + text);
+
+        String encoded = encode(text, key);
+        System.out.println("\nЗакодований текст:\n" + encoded);
+
+        String decoded = decode(encoded, key);
+        System.out.println("\nРозкодований текст:\n" + decoded);
+    }
+}
