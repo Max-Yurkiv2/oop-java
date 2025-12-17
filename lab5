@@ -1,0 +1,125 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class Main {
+
+    // ===== Інтерфейс =====
+    interface AreaComputable {
+        double getArea();
+
+        // "Поведінка" винесена в інтерфейс: стандартний вивід площі
+        default void printArea() {
+            System.out.printf("%s: площа = %.2f%n",
+                    this.getClass().getSimpleName(), getArea());
+        }
+    }
+
+    // ===== Абстрактний базовий клас =====
+    static abstract class Shape implements AreaComputable {
+        private final String name;
+
+        protected Shape(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void printInfo() {
+            System.out.println("Фігура: " + name);
+        }
+
+        @Override
+        public String toString() {
+            return name + " (area=" + getArea() + ")";
+        }
+    }
+
+    // ===== Дочірній клас: Паралелограм =====
+    static class Parallelogram extends Shape {
+        private final double a; // основа
+        private final double h; // висота
+
+        public Parallelogram(double a, double h) {
+            super("Parallelogram");
+            if (a <= 0 || h <= 0) {
+                throw new IllegalArgumentException("a і h мають бути > 0");
+            }
+            this.a = a;
+            this.h = h;
+        }
+
+        public double getA() { return a; }
+        public double getH() { return h; }
+
+        @Override
+        public double getArea() {
+            return a * h;
+        }
+    }
+
+    // ===== Дочірній клас: Трапеція =====
+    static class Trapezium extends Shape {
+        private final double c; // 1-ша основа
+        private final double d; // 2-га основа
+        private final double h; // висота
+
+        public Trapezium(double c, double d, double h) {
+            super("Trapezium");
+            if (c <= 0 || d <= 0 || h <= 0) {
+                throw new IllegalArgumentException("c, d, h мають бути > 0");
+            }
+            this.c = c;
+            this.d = d;
+            this.h = h;
+        }
+
+        public double getC() { return c; }
+        public double getD() { return d; }
+        public double getH() { return h; }
+
+        @Override
+        public double getArea() {
+            return (c + d) / 2.0 * h;
+        }
+    }
+
+    // ===== Демонстрація =====
+    public static void main(String[] args) {
+
+        // 1) Об'єкт типу КЛАС
+        Parallelogram p = new Parallelogram(5, 3);
+        p.printInfo();
+        p.printArea();
+
+        System.out.println();
+
+        // 2) Об'єкт типу БАТЬКІВСЬКИЙ КЛАС
+        Shape s = new Trapezium(4, 6, 3);
+        s.printInfo();
+        s.printArea(); // default-метод з інтерфейсу
+
+        System.out.println();
+
+        // 3) Об'єкт типу ІНТЕРФЕЙС
+        AreaComputable ac = new Parallelogram(10, 2);
+        ac.printArea();
+
+        System.out.println("\nКолекція фігур (поліморфізм):");
+        List<Shape> shapes = new ArrayList<>();
+        shapes.add(p);
+        shapes.add((Shape) s);
+
+        for (Shape sh : shapes) {
+            sh.printArea();
+        }
+
+        // ===== 1.9 Контрольні запитання (вивід у консоль) =====
+        System.out.println("\n--- Контрольні запитання ---");
+        System.out.println("1) Інтерфейс — контракт: набір методів, які клас повинен реалізувати.");
+        System.out.println("2) Абстрактний клас може мати поля/конструктор/часткову реалізацію; інтерфейс описує поведінку (контракт).");
+        System.out.println("3) Абстрактний клас — коли є спільний стан/код; інтерфейс — коли треба спільну поведінку для різних класів.");
+        System.out.println("4) Напряму об'єкт інтерфейсу створити не можна, але можна мати посилання інтерфейса на реалізацію.");
+    }
+}
