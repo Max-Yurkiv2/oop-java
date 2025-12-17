@@ -1,0 +1,27 @@
+import javax.swing.*;
+import java.awt.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame();
+
+        frame.setTitle("Нижнє праве вікно");
+
+        frame.setSize(300, 400);
+
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = screen.width - frame.getWidth();
+        int y = screen.height - frame.getHeight();
+        frame.setLocation(x, y);
+
+        frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+
+        System.out.println("FRAME 2:");
+        System.out.println("Size: " + frame.getWidth() + "x" + frame.getHeight());
+        System.out.println("Location: x=" + frame.getX() + ", y=" + frame.getY());
+        System.out.println("State: cursor=HAND_CURSOR");
+    }
+}
