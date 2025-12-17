@@ -1,0 +1,48 @@
+import javax.swing.*;
+import java.awt.event.ItemEvent;
+
+public class Main{
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Варіант 3 – Меню");
+            frame.setSize(500, 300);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            JMenuBar menuBar = new JMenuBar();
+
+            JMenu tableMenu = new JMenu("Таблиця");
+
+            JCheckBoxMenuItem mergeCellsItem = new JCheckBoxMenuItem("Об’єднати комірки");
+
+            mergeCellsItem.addItemListener(e -> {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    System.out.println("Прапорець увімкнено");
+                } else {
+                    System.out.println("Прапорець вимкнено");
+                }
+            });
+
+            JMenu convertSubMenu = new JMenu("Перетворити");
+
+            JMenuItem textToTableItem = new JMenuItem("Текст у таблицю");
+            JMenuItem tableToTextItem = new JMenuItem("Таблицю у текст");
+
+            convertSubMenu.add(textToTableItem);
+            convertSubMenu.add(tableToTextItem);
+
+            tableMenu.add(mergeCellsItem);
+            tableMenu.add(convertSubMenu);
+
+            JMenu formatMenu = new JMenu("Формат");
+            JMenu serviceMenu = new JMenu("Сервіс");
+
+            menuBar.add(tableMenu);
+            menuBar.add(formatMenu);
+            menuBar.add(serviceMenu);
+
+            frame.setJMenuBar(menuBar);
+
+            frame.setVisible(true);
+        });
+    }
+}
